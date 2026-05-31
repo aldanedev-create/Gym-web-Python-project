@@ -1,0 +1,209 @@
+GYM-ON-THE-ROCK BILLING SYSTEM – PSEUDOCODE
+UTech | Contemporary Programming | MAy 13,2026
+================================================================
+
+
+START PROGRAM
+    RUN login()
+    RUN main_menu()
+END PROGRAM
+
+
+----------------------------------------------------------------
+login()
+----------------------------------------------------------------
+SET attempts = 0
+WHILE attempts < 3
+    GET password from user
+    IF password = "gym2025"
+        PRINT "Login successful"
+        EXIT loop
+    ELSE
+        attempts = attempts + 1
+        IF attempts = 3
+            PRINT "System shutting down"
+            STOP program
+        ELSE
+            PRINT "Wrong password, try again"
+        END IF
+    END IF
+END WHILE
+
+
+----------------------------------------------------------------
+main_menu()
+----------------------------------------------------------------
+WHILE running
+    SHOW options 1 to 6
+    GET choice
+    IF choice = 1 THEN run checkin_member()
+    IF choice = 2 THEN run add_members()
+    IF choice = 3 THEN run add_update_session()
+    IF choice = 4 THEN run add_instructor()
+    IF choice = 5 THEN run print_report()
+    IF choice = 6 THEN PRINT goodbye, STOP loop
+    ELSE PRINT "Invalid"
+END WHILE
+
+
+----------------------------------------------------------------
+checkin_member()
+----------------------------------------------------------------
+GET membership_number from user
+IF number not in members THEN PRINT "Not found", EXIT
+RECORD checkin with current date and time
+SHOW available sessions
+GET register = yes or no
+WHILE register = "yes"
+    GET session_id
+    IF session not found THEN PRINT "Not found"
+    ELSE IF already registered THEN PRINT "Duplicate"
+    ELSE ADD to registrations, PRINT "Registered"
+    GET register = yes or no
+END WHILE
+
+
+----------------------------------------------------------------
+add_members()
+----------------------------------------------------------------
+SET count = 0
+WHILE adding
+    GET first name, last name, contact
+    SHOW membership types 1 to 4
+    GET valid choice (repeat until 1/2/3/4 entered)
+    SET membership type from choice
+    GENERATE member ID
+    SAVE member to members dictionary
+    count = count + 1
+    GET again = yes or no
+    IF again ≠ "yes" THEN STOP loop
+END WHILE
+PRINT count, "member(s) added"
+
+
+----------------------------------------------------------------
+add_update_session()
+----------------------------------------------------------------
+SHOW options: 1 = Add, 2 = Update
+GET choice
+
+IF choice = 1
+    GET name, day, time slot, cost
+    VALIDATE time slot is Morning / Evening / Both
+    VALIDATE cost is a positive number
+    GET instructor IDs to assign
+    GENERATE session ID
+    SAVE session to sessions dictionary
+
+IF choice = 2
+    SHOW existing sessions
+    GET session ID to update
+    IF not found THEN PRINT "Not found", EXIT
+    GET new values (keep old value if user skips)
+    UPDATE session fields
+END IF
+
+
+----------------------------------------------------------------
+add_instructor()
+----------------------------------------------------------------
+SET count = 0
+WHILE adding
+    GET first name, last name, contact, specialization
+    GENERATE instructor ID
+    SAVE instructor to instructors dictionary
+    count = count + 1
+    GET again = yes or no
+    IF again ≠ "yes" THEN STOP loop
+END WHILE
+PRINT count, "instructor(s) added"
+
+
+----------------------------------------------------------------
+report_all_members()
+----------------------------------------------------------------
+IF members is empty THEN PRINT "No records", EXIT
+FOR each member in members
+    PRINT id, name, contact, membership type
+END FOR
+PRINT total count
+
+
+----------------------------------------------------------------
+report_sessions_schedule()
+----------------------------------------------------------------
+IF sessions is empty THEN PRINT "No records", EXIT
+FOR each session in sessions
+    GET instructor names from instructors dictionary
+    PRINT session id, name, day, time, cost, instructors
+END FOR
+
+
+----------------------------------------------------------------
+report_members_by_type()
+----------------------------------------------------------------
+FOR each type in (Platinum, Diamond, Gold, Standard)
+    FILTER members by this type
+    PRINT type heading, monthly cost
+    FOR each matching member
+        PRINT id, name
+    END FOR
+    PRINT total members and total monthly fees
+END FOR
+
+
+----------------------------------------------------------------
+report_session_registrations()
+----------------------------------------------------------------
+FOR each session in sessions
+    FILTER registrations for this session
+    PRINT session heading
+    FOR each registration
+        PRINT member id, name, date
+    END FOR
+    PRINT total registered and total earned
+END FOR
+
+
+----------------------------------------------------------------
+report_member_monthly_bill()
+----------------------------------------------------------------
+IF members is empty THEN PRINT "No records", EXIT
+SET grand_total = 0
+FOR each member in members
+    SET gym_fee = membership cost
+    SET discount = membership discount rate
+    FILTER registrations for this member
+    SET session_fee = 0
+    FOR each registration
+        session_fee = session_fee + (class cost × (1 - discount))
+    END FOR
+    SET total = gym_fee + session_fee
+    grand_total = grand_total + total
+    PRINT member row
+END FOR
+PRINT grand_total
+
+
+----------------------------------------------------------------
+generate_member_id()
+----------------------------------------------------------------
+member_counter = member_counter + 1
+RETURN "MEM" + member_counter
+
+
+----------------------------------------------------------------
+generate_instructor_id()
+----------------------------------------------------------------
+instructor_counter = instructor_counter + 1
+RETURN "INS" + instructor_counter
+
+
+----------------------------------------------------------------
+generate_session_id()
+----------------------------------------------------------------
+session_counter = session_counter + 1
+RETURN "SES" + session_counter
+
+
+END OF PSEUDOCODE
